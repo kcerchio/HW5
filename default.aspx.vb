@@ -5,11 +5,12 @@ Partial Class _Default
     Inherits System.Web.UI.Page
     'Adapted from the loan calculator found at www.dreamincode.net/forums/topic/237228-looping-issues-using-a-grid-for-mortgage-calculator-amortization/
     Protected Sub btnCalcPmt_Click(sender As Object, e As EventArgs) Handles btnCalcPmt.Click
-        Dim loanAmount As Double
-        Dim annualRate As Double
+
+        Dim loanAmount As Double = Val(tb_LoanAmt.Text)
+        Dim annualRate As Double = Val(tb_AnnualInterest.Text)
         Dim interestRate As Double
         Dim term As Integer
-        Dim loanTerm As Integer
+        Dim loanTerm As Integer = Val(tb_LoanTerm.Text)
         Dim monthlyPayment As Double
 
         'This section is declaring the variables for loan amortization.
@@ -26,12 +27,12 @@ Partial Class _Default
         interestPaid = 0.0
 
         'This section converts each input string to the appropriate variable assigned.
-        loanAmount = CDbl(tbLoanAmt.Text)
-        annualRate = CDbl(tbAnnualInterest.Text)
-        term = CDbl(tbLoanTerm.Text)
+        loanAmount = CDbl(tb_LoanAmt.Text)
+        annualRate = CDbl(tb_AnnualInterest.Text)
+        term = CDbl(tb_LoanTerm.Text)
 
         'This section formats the loan input to currency.
-        tbLoanAmt.Text = FormatCurrency(loanAmount)
+        tb_LoanAmt.Text = FormatCurrency(loanAmount)
 
         'Converting the annual rate to a monthly rate by dividing by 100 * 12 (months in a year)
         interestRate = annualRate / (100 * 12)
@@ -48,8 +49,10 @@ Partial Class _Default
 
         'Adds items to list box, formats them for currency and adds pad spacing for each item.
         loanAmortTbl.Columns.Add("Payment Number", System.Type.GetType("System.String"))
+        loanAmortTbl.Columns.Add("Payment Date", System.Type.GetType("System.String"))
         loanAmortTbl.Columns.Add("Principal Paid", System.Type.GetType("System.String"))
         loanAmortTbl.Columns.Add("Interest Paid", System.Type.GetType("System.String"))
+        loanAmortTbl.Columns.Add("New Balance", System.Type.GetType("System.String"))
 
 
         'This section uses the for loop to display the loan balance and interest paid over the term of the loan.
@@ -77,6 +80,15 @@ Partial Class _Default
         loanGridView.DataSource = loanAmortTbl
         loanGridView.DataBind()
 
+
+    End Sub
+
+    Protected Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
+        tb_LoanAmt.Text = String.Empty
+        tb_annualInterest.Text = String.Empty
+        tb_LoanTerm.Text = String.Empty
+        loanGridView.DataSource = Nothing
+        loanGridView.DataBind()
 
     End Sub
 
